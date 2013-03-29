@@ -1,5 +1,5 @@
 {
-    "name" : "SpoonX/SxCore",
+    "name" : "spoonx/sxcore",
     "description" : "A library of tested components sed throughout the Sx namespace.",
     "type" : "library",
     "license" : "BSD-3-Clause",
