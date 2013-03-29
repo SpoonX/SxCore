@@ -8,4 +8,4 @@ Installation
 ------------
 Simply add a dependency to SxCore in composer. When asked for a version type `1.*`.
 
-    `composer require spoonx/sxcore`
+    composer require spoonx/sxcore
