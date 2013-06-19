@@ -204,6 +204,27 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIsVoidElement()
+    {
+        $htmlElement = new HtmlElement;
+
+        $this->assertTrue($htmlElement->isVoidElement('input'));
+        $this->assertFalse($htmlElement->isVoidElement('div'));
+
+        $htmlElement = new HtmlElement('span');
+        $this->assertFalse($htmlElement->isVoidElement());
+
+        $htmlElement = new HtmlElement('br');
+        $this->assertTrue($htmlElement->isVoidElement());
+    }
+
+    public function testGetTag()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $this->assertSame('input', $htmlElement->getTag());
+    }
+
     /**
      * @expectedException \SxCore\Html\Exception\RuntimeException
      */

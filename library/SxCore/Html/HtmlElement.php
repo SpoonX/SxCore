@@ -87,11 +87,25 @@ class HtmlElement
      */
     public function __construct($tag = 'div')
     {
-        if (in_array($tag, $this->voidElements)) {
+        if ($this->isVoidElement($tag)) {
             $this->setVoid();
         }
 
         $this->tag = $tag;
+    }
+
+    /**
+     * @param $tag
+     *
+     * @return boolean
+     */
+    public function isVoidElement($tag = null)
+    {
+        if (null === $tag) {
+            $tag = $this->getTag();
+        }
+
+        return in_array($tag, $this->voidElements);
     }
 
     /**
@@ -427,7 +441,7 @@ class HtmlElement
     public function render()
     {
         if ($this->isVoid) {
-            return $this->getTag();
+            return $this->renderTag();
         }
 
         $content = '';
@@ -442,7 +456,15 @@ class HtmlElement
             $content = $this->getContent() . $content;
         }
 
-        return $this->getTag($content);
+        return $this->renderTag($content);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
     }
 
     /**
@@ -452,7 +474,7 @@ class HtmlElement
      *
      * @return  string
      */
-    protected function getTag($content = null)
+    protected function renderTag($content = null)
     {
         $attributes = $this->renderAttributes();
 
