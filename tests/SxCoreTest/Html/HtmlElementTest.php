@@ -39,6 +39,9 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $htmlElement->setIsXhtml();
         $this->assertTrue($this->readAttribute($htmlElement, 'isXhtml'));
 
+        // Test if trailing slash was added
+        $this->assertSame('<input />', $htmlElement->render());
+
         // Test uses arguments
         $returnValue = $htmlElement->setIsXhtml(false);
         $this->assertFalse($this->readAttribute($htmlElement, 'isXhtml'));
