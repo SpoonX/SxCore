@@ -95,7 +95,7 @@ class HtmlElement
     }
 
     /**
-     * @param $tag
+     * @param string $tag
      *
      * @return boolean
      */
