@@ -42,18 +42,97 @@ class HtmlElement
     /**
      * Append, or prepend set content next to rendered children
      *
-     * @var     string  prepend|append
+     * @var string  prepend|append
      */
     protected $contentConcat = 'prepend';
 
     /**
-     * Contruct tag
+     * @var boolean
+     */
+    protected $isVoid = false;
+
+    /**
+     * @var boolean
+     */
+    protected $isXhtml = false;
+
+    /**
+     * @var array
      *
-     * @param   string  $tag    Tagname (Allowed tags are html tags, div, span, a etc)
+     * @see http://www.w3.org/TR/html-markup/syntax.html#syntax-elements
+     */
+    protected $voidElements = array(
+        'area',
+        'base',
+        'br',
+        'col',
+        'command',
+        'embed',
+        'hr',
+        'img',
+        'input',
+        'keygen',
+        'link',
+        'meta',
+        'param',
+        'source',
+        'track',
+        'wbr',
+    );
+
+    /**
+     * Construct tag
+     *
+     * @param string $tag The tag name (div, span, p, table etc).
      */
     public function __construct($tag = 'div')
     {
+        if ($this->isVoidElement($tag)) {
+            $this->setVoid();
+        }
+
         $this->tag = $tag;
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return boolean
+     */
+    public function isVoidElement($tag = null)
+    {
+        if (null === $tag) {
+            $tag = $this->getTag();
+        }
+
+        return in_array($tag, $this->voidElements);
+    }
+
+    /**
+     * @param boolean $isXhtml
+     *
+     * @return \SxCore\Html\HtmlElement
+     */
+    public function setIsXhtml($isXhtml = true)
+    {
+        $this->isXhtml = (bool) $isXhtml;
+
+        return $this;
+    }
+
+    /**
+     * Set the element to be void.
+     *
+     * @param boolean $void
+     *
+     * @return \SxCore\Html\HtmlElement
+     * @see    http://www.w3.org/TR/html-markup/syntax.html#syntax-elements
+     */
+    public function setVoid($void = true)
+    {
+        $this->isVoid = (bool) $void;
+
+        return $this;
     }
 
     /**
@@ -83,7 +162,7 @@ class HtmlElement
     /**
      * Set tag attributes
      *
-     * @param   array   $attributes
+     * @param   array $attributes
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -97,7 +176,7 @@ class HtmlElement
     /**
      * Add tag attributes
      *
-     * @param   array   $attributes
+     * @param   array $attributes
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -110,8 +189,8 @@ class HtmlElement
 
     /**
      *
-     * @param   string  $key
-     * @param   string  $value
+     * @param   string $key
+     * @param   string $value
      *
      * @return  \SxCore\Html\HtmlElement
      *
@@ -157,7 +236,7 @@ class HtmlElement
     /**
      * Add class to tag
      *
-     * @param   string  $class
+     * @param   string $class
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -173,12 +252,19 @@ class HtmlElement
     /**
      * Set the content. (Overwrites old content)
      *
-     * @param   string  $content
+     * @param   string $content
      *
-     * @return  \SxCore\Html\HtmlElement
+     * @throws Exception\RuntimeException
+     * @return \SxCore\Html\HtmlElement
      */
     public function setContent($content)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t contain content.'
+            );
+        }
+
         $this->content = $content;
 
         return $this;
@@ -187,12 +273,19 @@ class HtmlElement
     /**
      * Append content before other content
      *
-     * @param   string  $content
+     * @param   string $content
      *
+     * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
      */
     public function appendContent($content)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t contain content.'
+            );
+        }
+
         $this->content .= $content;
 
         return $this;
@@ -201,12 +294,19 @@ class HtmlElement
     /**
      * Prepend content before other content
      *
-     * @param   string  $content
+     * @param   string $content
      *
+     * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
      */
     public function prependContent($content)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t contain content.'
+            );
+        }
+
         $this->content = $content . $this->content;
 
         return $this;
@@ -237,24 +337,38 @@ class HtmlElement
     /**
      * Spawn child
      *
-     * @param   string  $tag
+     * @param   string $tag
      *
-     * @return  \SxCore\Html\HtmlElement
+     * @throws Exception\RuntimeException
+     * @return \SxCore\Html\HtmlElement
      */
     public function spawnChild($tag = null)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t have child elements.'
+            );
+        }
+
         return $this->children[] = new self($tag);
     }
 
     /**
      * Add child to tag
      *
-     * @param   \SxCore\Html\HtmlElement   $child
+     * @param   \SxCore\Html\HtmlElement $child
      *
+     * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
      */
     public function addChild(self $child)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t have child elements.'
+            );
+        }
+
         $this->children[] = $child;
 
         return $this;
@@ -263,12 +377,19 @@ class HtmlElement
     /**
      * Add children to tag
      *
-     * @param   array   $children
+     * @param   array $children
      *
+     * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
      */
     public function addChildren(array $children)
     {
+        if ($this->isVoid) {
+            throw new Exception\RuntimeException(
+                'Void elements can\'t have child elements.'
+            );
+        }
+
         foreach ($children as $child) {
             $this->addChild($child);
         }
@@ -291,7 +412,7 @@ class HtmlElement
     /**
      * Set children
      *
-     * @param   array   $children
+     * @param   array $children
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -319,6 +440,10 @@ class HtmlElement
      */
     public function render()
     {
+        if ($this->isVoid) {
+            return $this->renderTag();
+        }
+
         $content = '';
 
         if ($this->hasChildren()) {
@@ -331,19 +456,36 @@ class HtmlElement
             $content = $this->getContent() . $content;
         }
 
-        return $this->getTag($content);
+        return $this->renderTag($content);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
     }
 
     /**
      * Render tag
      *
-     * @param   string  $content
+     * @param   string $content
      *
      * @return  string
      */
-    protected function getTag($content)
+    protected function renderTag($content = null)
     {
         $attributes = $this->renderAttributes();
+
+        if ($this->isVoid) {
+            return sprintf(
+                '<%1$s%2$s%3$s>',
+                $this->tag,
+                $attributes,
+                $this->isXhtml ? ' /' : ''
+            );
+        }
 
         return sprintf(
             '<%1$s%2$s>%3$s</%1$s>',
