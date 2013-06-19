@@ -19,12 +19,52 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $htmlElementSpan = new HtmlElement('span');
 
         $this->assertEquals('<span></span>', $htmlElementSpan->render());
-        $this->assertEquals('<span></span>', $htmlElementSpan);
+        $this->assertEquals('<span></span>', (string) $htmlElementSpan);
+    }
+
+    public function testConstructVoid()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $this->assertEquals('<input>', $htmlElement->render());
+    }
+
+    public function testSetIsXhtml()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $this->assertFalse($this->readAttribute($htmlElement, 'isXhtml'));
+
+        // Test defaults to true
+        $htmlElement->setIsXhtml();
+        $this->assertTrue($this->readAttribute($htmlElement, 'isXhtml'));
+
+        // Test uses arguments
+        $returnValue = $htmlElement->setIsXhtml(false);
+        $this->assertFalse($this->readAttribute($htmlElement, 'isXhtml'));
+
+        // test returns self
+        $this->assertInstanceOf('\SxCore\Html\HtmlElement', $returnValue);
+    }
+
+    public function testSetVoid()
+    {
+        $htmlElement = new HtmlElement('div');
+
+        // Test uses arguments
+        $htmlElement->setVoid(false);
+        $this->assertFalse($this->readAttribute($htmlElement, 'isVoid'));
+
+        // Test defaults to true
+        $htmlElement->setVoid();
+        $this->assertTrue($this->readAttribute($htmlElement, 'isVoid'));
+
+        $this->assertSame('<div>', $htmlElement->render());
+
     }
 
     public function testSetAppendContent()
     {
-
         $htmlElement = new HtmlElement;
 
         $htmlElement->setAppendContent();
@@ -164,6 +204,16 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testSetContentFails()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $htmlElement->setContent('Bacon');
+    }
+
     public function testAppendContent()
     {
         $htmlElement = new HtmlElement;
@@ -174,6 +224,16 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<div>Knock knock. Go away.</div>', $htmlElement->render());
     }
 
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testAppendContentFails()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $htmlElement->appendContent('Bacon');
+    }
+
     public function testPrependContent()
     {
         $htmlElement = new HtmlElement;
@@ -182,6 +242,16 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<div>But I did not even knock!</div>', $htmlElement->render());
         $htmlElement->prependContent('Go away. ');
         $this->assertEquals('<div>Go away. But I did not even knock!</div>', $htmlElement->render());
+    }
+
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testPrependContentFails()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $htmlElement->prependContent('Bacon');
     }
 
     public function testRemoveContent()
@@ -213,6 +283,16 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<video></video>', $childElement->render());
     }
 
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testSpawnChildFails()
+    {
+        $htmlElement = new HtmlElement('input');
+
+        $htmlElement->spawnChild('bacon');
+    }
+
     public function testAddChild()
     {
         $htmlElement  = new HtmlElement;
@@ -220,6 +300,17 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
 
         $htmlElement->addChild($childElement);
         $this->assertEquals('<section></section>', $childElement->render());
+    }
+
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testAddChildFails()
+    {
+        $htmlElement  = new HtmlElement('input');
+        $childElement = new HtmlElement('bacon');
+
+        $htmlElement->addChild($childElement);
     }
 
     public function testAddChildren()
@@ -233,6 +324,21 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
 
         $htmlElement->addChildren($childElements);
         $this->assertEquals('<div><bacon></bacon><foo></foo><bar></bar></div>', $htmlElement->render());
+    }
+
+    /**
+     * @expectedException \SxCore\Html\Exception\RuntimeException
+     */
+    public function testAddChildrenFails()
+    {
+        $htmlElement   = new HtmlElement('input');
+        $childElements = array(
+            new HtmlElement('bacon'),
+            new HtmlElement('foo'),
+            new HtmlElement('bar'),
+        );
+
+        $htmlElement->addChildren($childElements);
     }
 
     public function testRemoveChildren()
