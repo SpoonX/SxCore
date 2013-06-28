@@ -196,9 +196,9 @@ class HtmlElement
      *
      * @throws  \SxCore\Html\Exception\InvalidArgumentException
      */
-    public function addAttribute($key, $value)
+    public function addAttribute($key, $value = null)
     {
-        if (!is_string($key) || ((!is_string($value)) && !is_numeric($value))) {
+        if (!is_string($key) || ((!is_string($value)) && !is_numeric($value) && null !== $value)) {
             throw new Exception\InvalidArgumentException(
                 'Invalid key or value type supplied. Expected string.'
             );
@@ -505,7 +505,7 @@ class HtmlElement
         $attributes = '';
 
         foreach ($this->attributes as $key => $value) {
-            $attributes .= " $key=\"$value\"";
+            $attributes .= " $key" . (null !== $value ? "=\"$value\"" : '');
         }
 
         return $attributes;

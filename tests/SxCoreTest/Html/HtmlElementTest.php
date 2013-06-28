@@ -126,6 +126,15 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $htmlElement->addAttribute('abc', new \StdClass);
     }
 
+    public function testAddAttributeValueNull()
+    {
+        $htmlElement = new HtmlElement;
+
+        $htmlElement->addAttribute('abc');
+
+        $this->assertSame('<div abc></div>', $htmlElement->render());
+    }
+
     public function testAddAttributes()
     {
         $htmlElement = new HtmlElement;
