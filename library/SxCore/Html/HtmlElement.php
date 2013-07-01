@@ -447,7 +447,7 @@ class HtmlElement
         $content = '';
 
         if ($this->hasChildren()) {
-            $content = $this->renderChildren($this->children);
+            $content = $this->renderChildren();
         }
 
         if ('append' === $this->contentConcat) {
@@ -512,12 +512,24 @@ class HtmlElement
     }
 
     /**
+     * @return array|HtmlElement[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
      * @param array|HtmlElement[] $children
      *
      * @return string
      */
-    protected function renderChildren(array $children)
+    public function renderChildren(array $children = array())
     {
+        if (empty($children)) {
+            $children = $this->getChildren();
+        }
+
         $content = '';
 
         foreach ($children as $child) {
