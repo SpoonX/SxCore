@@ -414,4 +414,34 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $htmlElement->setChildren($childElements);
         $this->assertTrue($htmlElement->hasChildren());
     }
+
+    public function testGetChildren()
+    {
+        $htmlElement   = new HtmlElement;
+        $childElements = array(
+            new HtmlElement('bacon'),
+            new HtmlElement('foo'),
+            new HtmlElement('bar'),
+        );
+
+        $htmlElement->setChildren($childElements);
+        $this->assertSame($childElements, $htmlElement->getChildren());
+    }
+
+    /**
+     * @expectedException \SxCore\Html\Exception\InvalidArgumentException
+     */
+    public function testRenderChildrenFails()
+    {
+        $htmlElement   = new HtmlElement;
+        $childElements = array(
+            new HtmlElement('bacon'),
+            new HtmlElement('foo'),
+            new HtmlElement('bar'),
+        );
+
+        $htmlElement->setChildren($childElements);
+        $this->assertSame('', $htmlElement->renderChildren(''));
+        $htmlElement->renderChildren('abc');
+    }
 }

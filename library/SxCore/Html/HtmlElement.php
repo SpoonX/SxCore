@@ -447,7 +447,7 @@ class HtmlElement
         $content = '';
 
         if ($this->hasChildren()) {
-            $content = $this->renderChildren($this->children);
+            $content = $this->renderChildren();
         }
 
         if ('append' === $this->contentConcat) {
@@ -512,14 +512,34 @@ class HtmlElement
     }
 
     /**
-     * @param array|HtmlElement[] $children
+     * @return array|HtmlElement[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param null|HtmlElement[] $children
      *
+     * @throws Exception\InvalidArgumentException
      * @return string
      */
-    protected function renderChildren(array $children)
+    public function renderChildren($children = null)
     {
+        if (null === $children) {
+            $children = $this->getChildren();
+        }
+
+        if (!is_array($children)) {
+            throw new Exception\InvalidArgumentException(
+                'Invalid children type supplied. Expected array or null.'
+            );
+        }
+
         $content = '';
 
+        /* @var $child HtmlElement */
         foreach ($children as $child) {
             $content .= $child->render();
         }
