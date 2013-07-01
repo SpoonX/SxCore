@@ -50,8 +50,6 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\SxCore\Html\HtmlElement', $returnValue);
     }
 
-
-
     public function testSetVoid()
     {
         $htmlElement = new HtmlElement('div');
