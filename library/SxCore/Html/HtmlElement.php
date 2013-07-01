@@ -520,18 +520,26 @@ class HtmlElement
     }
 
     /**
-     * @param array|HtmlElement[] $children
+     * @param null|HtmlElement[] $children
      *
+     * @throws Exception\InvalidArgumentException
      * @return string
      */
-    public function renderChildren(array $children = array())
+    public function renderChildren($children = null)
     {
-        if (empty($children)) {
+        if (null === $children) {
             $children = $this->getChildren();
+        }
+
+        if (!is_array($children)) {
+            throw new Exception\InvalidArgumentException(
+                'Invalid children type supplied. Expected array or null.'
+            );
         }
 
         $content = '';
 
+        /* @var $child HtmlElement */
         foreach ($children as $child) {
             $content .= $child->render();
         }
