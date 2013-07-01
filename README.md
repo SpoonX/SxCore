@@ -1,4 +1,4 @@
-# SxCore 1.2.0
+# SxCore 1.3.1
 
 SxCore is a library of fully tested components used throughout the `Sx` namespace.
 
