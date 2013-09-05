@@ -238,7 +238,7 @@ class HtmlElement
      * 
      * @param string @attribute
      * 
-     * @return string
+     * @return string|null
      */
     public function getAttribute($attribute)
     {
