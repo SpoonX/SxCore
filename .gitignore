@@ -8,3 +8,4 @@ phpunit.xml
 .nbproject
 clover.xml
 .c9revisions
+composer*
