@@ -316,6 +316,15 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<video></video>', $childElement->render());
     }
 
+    public function testSpawnChildNoParams()
+    {
+        $htmlElement  = new HtmlElement;
+        $childElement = $htmlElement->spawnChild();
+
+        $this->assertInstanceOf('\SxCore\Html\HtmlElement', $childElement);
+        $this->assertEquals('<div></div>', $childElement->render());
+    }
+
     /**
      * @expectedException \SxCore\Html\Exception\RuntimeException
      */
