@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @category    SxCore
- * @package     Html
+ * @category SxCore
+ * @package  Html
  */
 namespace SxCore\Html;
 
@@ -162,7 +162,7 @@ class HtmlElement
     /**
      * Set tag attributes
      *
-     * @param   array $attributes
+     * @param array $attributes
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -176,7 +176,7 @@ class HtmlElement
     /**
      * Add tag attributes
      *
-     * @param   array $attributes
+     * @param array $attributes
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -189,8 +189,8 @@ class HtmlElement
 
     /**
      *
-     * @param   string $key
-     * @param   string $value
+     * @param string $key
+     * @param string $value
      *
      * @return  \SxCore\Html\HtmlElement
      *
@@ -236,7 +236,7 @@ class HtmlElement
     /**
      * Add class to tag
      *
-     * @param   string $class
+     * @param string $class
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -252,7 +252,7 @@ class HtmlElement
     /**
      * Set the content. (Overwrites old content)
      *
-     * @param   string $content
+     * @param string $content
      *
      * @throws Exception\RuntimeException
      * @return \SxCore\Html\HtmlElement
@@ -273,7 +273,7 @@ class HtmlElement
     /**
      * Append content before other content
      *
-     * @param   string $content
+     * @param string $content
      *
      * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
@@ -294,7 +294,7 @@ class HtmlElement
     /**
      * Prepend content before other content
      *
-     * @param   string $content
+     * @param string $content
      *
      * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
@@ -337,12 +337,12 @@ class HtmlElement
     /**
      * Spawn child
      *
-     * @param   string $tag
+     * @param string $tag
      *
      * @throws Exception\RuntimeException
      * @return \SxCore\Html\HtmlElement
      */
-    public function spawnChild($tag = null)
+    public function spawnChild($tag = 'div')
     {
         if ($this->isVoid) {
             throw new Exception\RuntimeException(
@@ -356,10 +356,10 @@ class HtmlElement
     /**
      * Add child to tag
      *
-     * @param   \SxCore\Html\HtmlElement $child
+     * @param \SxCore\Html\HtmlElement $child
      *
      * @throws Exception\RuntimeException
-     * @return  \SxCore\Html\HtmlElement
+     * @return \SxCore\Html\HtmlElement
      */
     public function addChild(self $child)
     {
@@ -377,7 +377,7 @@ class HtmlElement
     /**
      * Add children to tag
      *
-     * @param   array $children
+     * @param array $children
      *
      * @throws Exception\RuntimeException
      * @return  \SxCore\Html\HtmlElement
@@ -412,7 +412,7 @@ class HtmlElement
     /**
      * Set children
      *
-     * @param   array $children
+     * @param array $children
      *
      * @return  \SxCore\Html\HtmlElement
      */
@@ -426,7 +426,7 @@ class HtmlElement
     /**
      * Check for children
      *
-     * @return  bool
+     * @return bool
      */
     public function hasChildren()
     {
@@ -436,7 +436,7 @@ class HtmlElement
     /**
      * Render content
      *
-     * @return  string
+     * @return string
      */
     public function render()
     {
@@ -470,9 +470,9 @@ class HtmlElement
     /**
      * Render tag
      *
-     * @param   string $content
+     * @param string $content
      *
-     * @return  string
+     * @return string
      */
     protected function renderTag($content = null)
     {
@@ -498,7 +498,7 @@ class HtmlElement
     /**
      * Render tag attributes
      *
-     * @return  string
+     * @return string
      */
     protected function renderAttributes()
     {
@@ -556,5 +556,4 @@ class HtmlElement
     {
         return $this->render();
     }
-
 }
