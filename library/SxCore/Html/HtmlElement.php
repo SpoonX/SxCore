@@ -431,7 +431,7 @@ class HtmlElement
     public function setChildren(array $children)
     {
         $this->removeChildren();
-        
+
         return $this->addChildren($children);
     }
 
