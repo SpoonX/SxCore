@@ -235,9 +235,9 @@ class HtmlElement
     
     /**
      * Get a specific attribute for this tag.
-     * 
+     *
      * @param string @attribute
-     * 
+     *
      * @return string|null
      */
     public function getAttribute($attribute)
