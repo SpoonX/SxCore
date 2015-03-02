@@ -232,7 +232,7 @@ class HtmlElement
     {
         return $this->attributes;
     }
-    
+
     /**
      * Get a specific attribute for this tag.
      *
