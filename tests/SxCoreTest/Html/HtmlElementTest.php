@@ -50,6 +50,15 @@ class HtmlElementTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\SxCore\Html\HtmlElement', $returnValue);
     }
 
+    public function testGetAttribute()
+    {
+        $htmlElement = new HtmlElement;
+
+        $htmlElement->addAttribute('id', 'bacon');
+
+        $this->assertEquals('bacon', $htmlElement->getAttribute('id'));
+    }
+
     public function testSetVoid()
     {
         $htmlElement = new HtmlElement('div');

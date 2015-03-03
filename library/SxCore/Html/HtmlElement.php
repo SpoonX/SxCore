@@ -234,11 +234,23 @@ class HtmlElement
     }
 
     /**
+     * Get a specific attribute for this tag.
+     *
+     * @param string @attribute
+     *
+     * @return string|null
+     */
+    public function getAttribute($attribute)
+    {
+        return !empty($this->attributes[$attribute]) ? $this->attributes[$attribute] : null;
+    }
+
+    /**
      * Add class to tag
      *
      * @param string $class
      *
-     * @return  \SxCore\Html\HtmlElement
+     * @return \SxCore\Html\HtmlElement
      */
     public function addClass($class)
     {
